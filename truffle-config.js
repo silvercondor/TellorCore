@@ -1,6 +1,6 @@
 require('dotenv').config()
 var HDWalletProvider = require("truffle-hdwallet-provider");
-var NonceTrackerSubprovider = require("web3-provider-engine/subproviders/nonce-tracker")
+//var NonceTrackerSubprovider = require("web3-provider-engine/subproviders/nonce-tracker")
 
 
 //Nick zkGX3Vf8njIXiHEGRueB
@@ -13,12 +13,33 @@ var accessToken = process.env.INFURA_ACCESS_TOKEN;
 var Mainnet_alchemy = process.env.main_alchemy;
 var Rinkeby_alchemy = process.env.rinkeby_alchemy;
 
-/*const NonceSubprovider = require("web3-provider-engine/subproviders/nonce-tracker"); 
+/*const NonceSubprovider = require("web3-provider-engine/subproviders/nonce-tracker"); */
 const createInfuraProvider = (secret, infuraUrl) => { 
   const provider = new HDWalletProvider(secret, infuraUrl); 
   provider.engine.addProvider(new NonceSubprovider()); 
-  return provider; }*/
+  return provider; }
 
+
+/*  async function getNonce(wallet) {
+  var nonceTracker = new NonceTrackerSubprovider()
+  try {  provider = wallet
+        await provider.engine._providers.unshift(nonceTracker)
+        await nonceTracker.setEngine(provider.engine)
+        return provider
+    console.log("try");
+  } catch(e){
+    throw Error(e);
+  }
+}*/
+
+/*const Promise = require('bluebird');
+const Web3 = require('web3');
+const web3 = new Web3(new Web3.providers.HttpProvider(<WEB3_PROVIDER_URL>));
+
+if (typeof web3.eth.getAccountsPromise === 'undefined') {
+  Promise.promisifyAll(web3.eth, { suffix: 'Promise' });
+}
+*/
 module.exports = {
   networks: {
     development: {
@@ -49,7 +70,7 @@ module.exports = {
       gasPrice: 7000000000
     },*/
 
-        mainnet: {
+/*      mainnet: {
       network_id: "1",
       provider: function () {
         var wallet = new HDWalletProvider(mnemonic, 'https://eth-mainnet.alchemyapi.io/jsonrpc/'+ Mainnet_alchemy)
@@ -61,7 +82,7 @@ module.exports = {
       network_id: 1,
       gas: 4700000,
       gasPrice: 8000000000
-    },
+    },*/
 
 /*    mainnet: {
       network_id: "1",
@@ -106,18 +127,31 @@ module.exports = {
     }*/
 
     rinkeby: {
-      //network_id: "4",
-      provider: new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/7f11ed6df93946658bf4c817620fbced"),
+      provider: function() {
+        return new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/7f11ed6df93946658bf4c817620fbced");
+      },
       network_id: 4,
       gas: 7000000,
-      gasPrice: 4000000000
+      gasPrice: 7000000000
     }
 
 /*    rinkeby: {
       network_id: "4",
       provider: function () {
+        //var wallet = new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/7f11ed6df93946658bf4c817620fbced")
+        //getNonce(wallet)
+        createInfuraProvider(mnemonic, https://rinkeby.infura.io/v3/7f11ed6df93946658bf4c817620fbced")
+      },
+      network_id: 4,
+      gas: 7000000,
+      gasPrice: 4000000000
+    }
+*/
+/*    rinkeby: {
+      network_id: "4",
+      provider: function () {
         var wallet = new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/7f11ed6df93946658bf4c817620fbced")
-       var nonceTracker = new NonceTrackerSubprovider()
+        var nonceTracker = new NonceTrackerSubprovider()
         wallet.engine._providers.unshift(nonceTracker)
         nonceTracker.setEngine(wallet.engine)
         return wallet

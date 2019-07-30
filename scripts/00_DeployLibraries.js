@@ -32,7 +32,7 @@ module.exports =async function(callback) {
   // deploy transfer
   tranfer = await TellorTransfer.new();
   console.log('TellorTransfer address:', transfer.address);
-  console.log('Use TellorTransfer address to link library in TellorDispute json file');
+  console.log('Use TellorTransfer address(without the 0x) to link library in TellorDispute json file');
   sleep_s(10);
 
   // // deploy dispute
