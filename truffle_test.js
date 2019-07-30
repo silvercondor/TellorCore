@@ -1,16 +1,17 @@
+require('dotenv').config()
 var HDWalletProvider = require("truffle-hdwallet-provider");
+var NonceTrackerSubprovider = require("web3-provider-engine/subproviders/nonce-tracker")
 
-var mnemonic = "nick lucian brenda kevin sam fiscal patch fly damp ocean produce wish";
 
-//Public - 0xe010ac6e0248790e08f42d5f697160dedf97e024
-//Private - 3a10b4bc1258e8bfefb95b498fb8c0f0cd6964a811eabca87df5630bcacd7216
 //ganache-cli -m "nick lucian brenda kevin sam fiscal patch fly damp ocean produce wish" -l 10000000
+//ganache-cli -m "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat"
+//HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/72bb9acde80d4a9ca803274f42f77612")
+var mnemonic = process.env.ETH_MNEMONIC;
+var accessToken = process.env.INFURA_ACCESS_TOKEN;
+var Mainnet_alchemy = process.env.main_alchemy;
+var Rinkeby_alchemy = process.env.rinkeby_alchemy;
 
-ganache-cli -m "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat"
-
-var nick = "the ureau";
-//public - 0xb204edaf0410675e00e6c8a7e448a9e8e2db69aa
-// private -fe5f52e7e0381448fe7d4a99e409b6da987b31362125ccb7bca781949cf61710
+//truffle migrate --network rinkeby
 
 module.exports = {
   networks: {
@@ -42,12 +43,26 @@ module.exports = {
       provider: new HDWalletProvider(mnemonic, "https://ropsten.infura.io"),
       network_id: 3,
       gas: 4612388
-    },
+    }/*,
     rinkeby: {
-            provider: function() {
+        provider: function() {
         return new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/72bb9acde80d4a9ca803274f42f77612")
       },
       network_id: 4
-    }   
+    } */  
+/*    rinkeby: {
+      network_id: "4",
+      provider: function () {
+        var wallet = new HDWalletProvider(mnemonic, 'https://rinkeby.infura.io/' + accessToken)
+        var nonceTracker = new NonceTrackerSubprovider()
+        wallet.engine._providers.unshift(nonceTracker)
+        nonceTracker.setEngine(wallet.engine)
+        return wallet
+      },
+      network_id: 4,
+      gas: 10000000,
+      gasPrice: 5000000000
+    },*/
+
   }
 };
